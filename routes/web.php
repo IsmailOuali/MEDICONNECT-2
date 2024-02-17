@@ -59,7 +59,9 @@ Route::get('/booking', function () {
     return view('booking');
 })->name('booking');
 
-
+Route::get('profile', function () {
+    return view('profile');
+})->name('profile');
 
 
 

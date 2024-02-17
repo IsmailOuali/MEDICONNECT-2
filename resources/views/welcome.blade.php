@@ -91,16 +91,7 @@
               </div>
             </div>
           </div>
-          <div class="hidden md:flex md:space-x-10">
-            <a href="#features"
-              class="font-medium text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out">Profil</a>
-            <a href="#pricing"
-              class="font-medium text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out">Consultation</a>
-            <a href="/booking"
-              class="font-medium text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out">Prendre un rendez-vous</a>
-            <a href="https://docs.pingping.io" target="_blank"
-              class="font-medium text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out">Medecins</a>
-          </div>
+
           <div class="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-0">
             <span class="inline-flex">
               <a href="/login" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium text-blue-600 hover:text-blue-500 focus:outline-none transition duration-150 ease-in-out">
