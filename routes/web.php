@@ -1,69 +1,50 @@
 <?php
+
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MedicamentController;
 use App\Http\Controllers\SpecialityController;
-use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\MedecinController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Medicament;
+use App\Models\SpecialiteMedical;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-Route::view('/dashboard', 'dashboard')->name('dashboard');
-
-Route::view('/doc-dashboard', 'docDashboard')->name('docDashboard');
-
+Route::get('/dashboard', function ( ){
+    return view ("dashboard", [
+        "medicaments" =>  medicament::all(),
+        "specialities" => SpecialiteMedical::all(),
+    ]);
+})->name('dashboard');
+Route::view('/doc-dashboard', function (){
+    return view ("docDashboard",[
+        'medicaments ' => $medicaments,
+         'specialities' => $specialities
+        ]);
+})->name('doc-dashboard');
 Route::view('/welcome', 'welcome')->name('welcome');
 
-Route::view('/profile', 'profile.edit')->name('profile.edit');
+Route::middleware(["auth", "role"])->group(function () {
+    Route::view('/profile', 'profile.edit')->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::get('/medicaments', [MedicamentController::class, 'index'])->name('medicaments.index');
+    Route::post('/medicaments', [MedicamentController::class, 'store'])->name('medicaments.store');
+    Route::get('/dashboard-medicament', [MedicamentController::class, 'dashboard'])->name('dashboard.medicament');
+    Route::put('/medicaments/{name}', [MedicamentController::class, 'update'])->name('medicaments.update');
+    Route::delete('/medicaments/{id}', [MedicamentController::class, 'destroy'])->name('medicaments.destroy');
 
-Route::patch('/profile', function () {
-    return redirect()->route('profile.edit');
-})->name('profile.update');
-
-Route::delete('/profile', function () {
-    return redirect()->route('dashboard');
-})->name('profile.destroy');
-
-Route::view('/register', 'register')->name('register');
-
-Route::post('/register', function () {
-    return redirect()->route('dashboard');
+    Route::get('/specialities', [SpecialityController::class, 'index'])->name('specialities.index');
+    Route::post('/Specialities-store', [SpecialityController::class, 'store'])->name('Specialities-store');
+    Route::get('/dashboard-speciality', [SpecialityController::class, 'dashboard'])->name('dashboard.speciality');
+    Route::put('/specialities/{name}', [SpecialityController::class, 'update'])->name('specialities-update');
+    Route::delete('/specialities/{id}', [SpecialityController::class, 'destroy'])->name('specialities-destroy');
+    
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking');
+    Route::get('/patient', [PatientController::class, 'index'])->name('patient');
+    Route::get('/medecins', [MedecinController::class, 'index'])->name('medecins.index');
 });
-
-Route::view('/login', 'login')->name('login');
-
-Route::post('/login', function () {
-})->middleware('RoleMiddleware')->name('login.redirect');
-
-Route::get('/medicaments', [MedicamentController::class, 'index'])->name('medicaments.index');
-Route::post('/medicaments', [MedicamentController::class, 'store'])->name('medicaments.store');
-Route::get('/doc-dashboard-medicament', [MedicamentController::class, 'docDashboard'])->name('docDashboard.medicament');
-Route::get('/doc-dashboard-speciality', [SpecialityController::class, 'docDashboard'])->name('docDashboard.speciality');
-Route::get('/dashboard', [MedicamentController::class, 'dashboard'])->name('dashboard');
-
-
-Route::get('/Specialities', [SpecialityController::class, 'index'])->name('Specialities.index');
-Route::post('/Specialties', [SpecialityController::class, 'store'])->name('Specialities.store');
-Route::get('/doc-dashboard', [SpecialityController::class, 'docDashboard'])->name('docDashboard');
-Route::get('/dashboard', [SpecialityController::class, 'dashboard'])->name('dashboard');
-Route::put('/medicaments/{name}', [MedicamentController::class, 'update'])->name('medicaments.update');
-Route::delete('/medicaments/{id}', [MedicamentController::class, 'destroy'])->name('medicaments.destroy');
-
-Route::put('/specialities/{name}', [SpecialityController::class, 'update'])->name('Specialities.update');
-Route::delete('/specialities/{id}', [SpecialityController::class, 'destroy'])->name('Specialities.destroy');
-
-
-Route::get('/booking', function () {
-    return view('booking');
-})->name('booking');
-
-Route::get('profile', function () {
-    return view('profile');
-})->name('profile');
-
-
-
 
 require __DIR__.'/auth.php';
