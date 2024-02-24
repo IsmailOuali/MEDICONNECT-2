@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Medicament;
+use App\Models\SpecialiteMedical;
 use Illuminate\Database\Eloquent\Model;
 use Closure;
 use Illuminate\Http\Request;
@@ -21,39 +22,39 @@ class RoleMiddleware
         if (!auth()->check()) {
             return redirect('login');
         }
-    
+        
         // Check if the user has one of the specified roles
         if (in_array(auth()->user()->role, $roles)) {
             // User has the required role, proceed
             return $next($request);
         }
-    
+        
         // Redirect the user based on their role
         $medicaments = Medicament::All();
-
+        
+        $specialities = SpecialiteMedical::all();
+        
+        $medicaments = Medicament::all();
         $specialities = SpecialiteMedical::all();
 
-        // Pass the 'medicaments' and 'specialities' variables to the views
-        $request->attributes->add([
-            'medicaments' => $medicaments,
-            'specialities' => $specialities,
-        ]);
-    
+        // Flash 'medicaments' and 'specialities' variables to the session
+        session(['medicaments' => $medicaments, 'specialities' => $specialities]);
+
         // Redirect the user based on their role
         switch (auth()->user()->role) {
             case 1: // Patient
-                return redirect('/welcome');
+                return redirect('/patient');
                 break;
             case 2: // Medecin
-                return redirect('/doc-dashboard', ['medicaments ' => $medicaments, 'specialities' => $specialities]);
+                return redirect()->route('doc-dashboard');
                 break;
             case 3: // Admin
-                return redirect('/dashboard', ['medicaments ' => $medicaments, 'specialities' => $specialities]);
+                return redirect('/dashboard');
                 break;
             default:
-                    // Default redirection if the role is not matched
+                // Default redirection if the role is not matched
                 return redirect('/');
                 break;
         }
-    }
+    }   
 }
