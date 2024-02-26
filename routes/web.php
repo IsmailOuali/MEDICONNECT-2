@@ -11,12 +11,8 @@ use App\Models\SpecialiteMedical;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-Route::get('/dashboard', function ( ){
-    return view ("dashboard", [
-        "medicaments" =>  medicament::all(),
-        "specialities" => SpecialiteMedical::all(),
-    ]);
-})->name('dashboard');
+Route::get('/dashboard', [MedicamentController::class, 'dashboard'])->name('dashboard');
+
 Route::view('/doc-dashboard', function (){
     return view ("docDashboard",[
         'medicaments ' => $medicaments,

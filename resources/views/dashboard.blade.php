@@ -135,16 +135,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                  @if($medicaments && $specialities)
                                     @foreach ($medicaments as $medicament)
                                     <tr class="border-b hover:bg-orange-100">
                                         <td class="p-3 px-5"><p>{{ $medicament->name }}</p></td>
                                         <td class="p-3 px-5 flex justify-end">
                                             <button type="button" onclick="fillUpdateForm('{{ $medicament->name }}')" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Update</button>
                                             <form method="POST" action="{{ route('medicaments.destroy', $medicament->id) }}">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
-                                            </form>
+                                              @csrf
+                                              @method('delete')
+                                              <button type="submit" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                                          </form>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -169,7 +170,7 @@
                                 <div class="bg-gray-100">
                                     <div class="mt-3 w-full min-h-screen flex flex-col	items-center justify-center">
                                         <div class="bg-blue-600 p-8 rounded-lg shadow-lg max-w-md w-full ">
-                                            <h1 class="text-xl font-semibold mb-4">Veuillez entrer le nom du Specialie</h1>
+                                            <h1 class="text-xl font-semibold mb-4">Veuillez entrer le nom du Specialtie</h1>
                                             <p class="text-gray-600 mb-6">Soyez precis en entrant cet information</p>
                                             <form method="POST" action="/Specialities-store">
                                                 @csrf
@@ -207,20 +208,25 @@
                                                           </td>
                                                       </tr>
                                                       @endforeach
+                                                  @else
+                                                      <p>Aucune donnes trouver</p>
+                                                  @endif
+
                                                   </tbody>
                                               </table>
                                           </div>
                                       </div>
                                       <div class="bg-blue-600 p-8 rounded-lg shadow-lg max-w-md w-full" id="updateSpecialityFormContainer" style="display: none;">
                                           <h1 class="text-xl font-semibold mb-4">Modifier la spécialité</h1>
-                                          <form method="POST" id="updateSpecialityForm" action="{{ route('specialities-update', ["name"=> $speciality->name])}}">
+                                          {{-- <form method="POST" id="updateSpecialityForm" action="{{ route('specialities-update', ["name"=> $speciality->name])}}">
                                               @csrf
+                                              
                                               @method('put')
                                               <div class="mb-4">
                                                   <input type="text" name="speciality" id="updateSpeciality" placeholder="Spécialité" class="w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500" />
                                               </div>
                                               <button type="submit" class="w-full bg-white text-black px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none">Modifier</button>
-                                          </form>
+                                          </form> --}}
                                       </div>
                                       
                                       </div>

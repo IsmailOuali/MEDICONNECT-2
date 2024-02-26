@@ -4,31 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Medicament;
+use App\Models\SpecialiteMedical;
 
 class MedicamentController extends Controller
 {
     /**
-     * Display a listing of the resource.
      */
     public function index()
     {
         $medicaments = Medicament::all();
 
-        // Pass the medicaments data to the view
         return view('welcome', compact('medicaments'));
-
     }
+
     public function docDashboard()
     {
         $medicaments = Medicament::all();
 
         return view('docDashboard', compact('medicaments'));
     }
+
     public function dashboard()
     {
         $medicaments = Medicament::all();
-
-        return view('dashboard', compact('medicaments'));
+        $specialities = SpecialiteMedical::all();
+    
+        return view('dashboard', compact('medicaments', 'specialities'));
     }
     
 
@@ -92,7 +93,7 @@ class MedicamentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         //
         $medicament = Medicament::findOrFail($id);

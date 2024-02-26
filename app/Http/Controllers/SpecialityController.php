@@ -18,24 +18,18 @@ class SpecialityController extends Controller
     }
     public function docDashboard()
     {
-        // Retrieve all medication names
         $medicaments = Medicament::all();
 
-        // Retrieve all speciality names
         $specialities = SpecialityMedical::all();
 
-        // Return the dashboard view with both 'medicaments' and 'specialities' variables
         return view('dashboard', compact('medicaments', 'specialities'));
     }
     public function dashboard()
     {
-        // Retrieve all medication names
         $medicaments = Medicament::all();
 
-        // Retrieve all speciality names
         $specialities = SpecialiteMedical::all();
 
-        // Return the dashboard view with both 'medicaments' and 'specialities' variables
         return view('dashboard', compact('medicaments', 'specialities'));
     }
     

@@ -29,27 +29,23 @@ class RoleMiddleware
             return $next($request);
         }
         
-        // Redirect the user based on their role
-        $medicaments = Medicament::All();
-        
-        $specialities = SpecialiteMedical::all();
+
         
         $medicaments = Medicament::all();
         $specialities = SpecialiteMedical::all();
 
-        // Flash 'medicaments' and 'specialities' variables to the session
         session(['medicaments' => $medicaments, 'specialities' => $specialities]);
 
         // Redirect the user based on their role
         switch (auth()->user()->role) {
             case 1: // Patient
-                return redirect('/patient');
+                return redirect('/welcome');
                 break;
             case 2: // Medecin
                 return redirect()->route('doc-dashboard');
                 break;
             case 3: // Admin
-                return redirect('/dashboard');
+                return redirect('/dashboard', compact('medicaments', 'specialities'));
                 break;
             default:
                 // Default redirection if the role is not matched
