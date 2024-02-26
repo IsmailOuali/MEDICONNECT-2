@@ -18,14 +18,11 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        // Check if the user is authenticated
         if (!auth()->check()) {
             return redirect('login');
         }
         
-        // Check if the user has one of the specified roles
         if (in_array(auth()->user()->role, $roles)) {
-            // User has the required role, proceed
             return $next($request);
         }
         
@@ -36,7 +33,6 @@ class RoleMiddleware
 
         session(['medicaments' => $medicaments, 'specialities' => $specialities]);
 
-        // Redirect the user based on their role
         switch (auth()->user()->role) {
             case 1: // Patient
                 return redirect('/welcome');
@@ -48,7 +44,6 @@ class RoleMiddleware
                 return redirect('/dashboard', compact('medicaments', 'specialities'));
                 break;
             default:
-                // Default redirection if the role is not matched
                 return redirect('/');
                 break;
         }
