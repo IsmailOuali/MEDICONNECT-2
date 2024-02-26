@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
     
             case '2':
                 $patient = new Patient();
-                $user->patient()->save($patient);
+                $user->isPatient()->save($patient);
                 break;
 
             }
