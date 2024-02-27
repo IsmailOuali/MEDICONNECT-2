@@ -72,20 +72,29 @@ class MedicamentController extends Controller
     public function edit(string $id)
     {
         //
+        $request->validate([
+            'medicament' => 'required|string|max:255',
+        ]);
+    
+        $medicament = Medicament::where('name', $medicament)->firstOrFail();
+        $medicament->name = $request->medicament;
+        $medicament->save();
+    
+        return back()->with('success', 'Medicament updated successfully.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-        public function update(Request $request, string $name)
+        public function update(Request $request, $medicament)
         {
             $request->validate([
                 'medicament' => 'required|string|max:255',
             ]);
         
-            $medicament = Medicament::where('name', $name)->firstOrFail();
-            $medicament->name = $request->medicament;
-            $medicament->save();
+            $medicamentModel = Medicament::findOrFail($medicament);
+            $medicamentModel->name = $request->medicament;
+            $medicamentModel->save();
         
             return back()->with('success', 'Medicament updated successfully.');
         }

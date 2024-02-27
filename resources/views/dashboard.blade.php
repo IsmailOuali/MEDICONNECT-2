@@ -73,7 +73,7 @@
                                     <path d="M8 17l4 4 4-4m-4-5v9"></path>
                                     <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"></path>
                                   </svg>
-                                  <h2 class="title-font font-medium text-3xl text-gray-900">2.7K</h2>
+                                  <h2 class="title-font font-medium text-3xl text-gray-900">{{ (new \App\Models\SpecialiteMedical)->specialtyCount() }}</h2>
                                   <p class="leading-relaxed">Consultations</p>
                                 </div>
                               </div>
@@ -110,10 +110,7 @@
                             </div>
                           </div>
                         </section>
-                        @php
-                        $medicaments = session('medicaments');
-                        $specialities = session('specialities');
-                    @endphp
+        
                         <section id="AddMedicament" class="text-gray-700 body-font">
                           <div class="bg-gray-100">
                               <div class="w-full min-h-screen flex items-center justify-center">
@@ -154,7 +151,7 @@
                               
                               <div class="bg-blue-600 p-8 rounded-lg shadow-lg max-w-md w-full" id="updateFormContainer" style="display: none;">
                                   <h1 class="text-xl font-semibold mb-4">Modifier le médicament</h1>
-                                  <form method="POST" id="updateForm" action="{{ route('medicaments.update', ['name' => $medicament->name]) }}">
+                                  <form method="POST" id="updateForm" action="{{ route('medicaments.update', ['medicament' => $medicament->name]) }}">
                                     @csrf
                                       @method('put')
                                       <div class="mb-4">
@@ -172,7 +169,7 @@
                                         <div class="bg-blue-600 p-8 rounded-lg shadow-lg max-w-md w-full ">
                                             <h1 class="text-xl font-semibold mb-4">Veuillez entrer le nom du Specialtie</h1>
                                             <p class="text-gray-600 mb-6">Soyez precis en entrant cet information</p>
-                                            <form method="POST" action="/Specialities-store">
+                                            <form method="POST" action="/specialities-store">
                                                 @csrf
                                                 <div class="mb-4">
                                                   <input type="text" name="speciality" placeholder="Speciality" class=" w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500" />
@@ -207,18 +204,14 @@
                                                             
                                                           </td>
                                                       </tr>
-                                                      @endforeach
-                                                  @else
-                                                      <p>Aucune donnes trouver</p>
-                                                  @endif
-
-                                                  </tbody>
-                                              </table>
-                                          </div>
+                                                      
+                                                    </tbody>
+                                                  </table>
+                                                </div>
                                       </div>
                                       <div class="bg-blue-600 p-8 rounded-lg shadow-lg max-w-md w-full" id="updateSpecialityFormContainer" style="display: none;">
                                           <h1 class="text-xl font-semibold mb-4">Modifier la spécialité</h1>
-                                          {{-- <form method="POST" id="updateSpecialityForm" action="{{ route('specialities-update', ["name"=> $speciality->name])}}">
+                                          <form method="POST" id="updateSpecialityForm" action="{{route('specialities-update', ['name' => $speciality->name]) }}">
                                               @csrf
                                               
                                               @method('put')
@@ -226,12 +219,16 @@
                                                   <input type="text" name="speciality" id="updateSpeciality" placeholder="Spécialité" class="w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500" />
                                               </div>
                                               <button type="submit" class="w-full bg-white text-black px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none">Modifier</button>
-                                          </form> --}}
-                                      </div>
+                                            </form>
+                                          </div>
                                       
                                       </div>
                                     </div>
                                     
+                                    @endforeach
+                                @else
+                                    <p>Aucune donnes trouver</p>
+                                @endif
                                   </section>
                                 </div>
                       
@@ -246,13 +243,13 @@
   <script>
      function fillUpdateForm(name) {
       document.getElementById('updateMedicament').value = name;
-    document.getElementById('updateForm').action = 'http://127.0.0.1:8000/medicaments/' + name;
+      document.getElementById('updateForm').action = 'http://127.0.0.1:8000/medicaments/' + encodeURIComponent(name);
     document.getElementById('updateFormContainer').style.display = 'block';
     }
 
     function fillUpdateSpecialityForm(name) {
     document.getElementById('updateSpeciality').value = name;
-    document.getElementById('updateSpecialityForm').action = 'http://127.0.0.1:8000/specialities/' + name;
+    document.getElementById('updateSpecialityForm').action = 'http://127.0.0.1:8000/specialities/' + encodeURIComponent(name);
     document.getElementById('updateSpecialityFormContainer').style.display = 'block';
 }
   </script>

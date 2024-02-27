@@ -17,4 +17,7 @@ class SpecialiteMedical extends Model
     {
         return $this->belongsToMany(Medecin::class);
     }
+    public function specialtyCount(){
+        return $this->count();;
+    }
 }

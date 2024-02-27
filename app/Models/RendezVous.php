@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class RendezVous extends Model
 {
     use HasFactory;
+    protected $table = 'rendez_vous';
+
+    protected $fillable = [
+        'date',
+    ];
     public function patient()
     {
         return $this->belongsTo(Patient::class);

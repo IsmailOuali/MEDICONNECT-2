@@ -1,4 +1,6 @@
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <div class="w-screen">
     <div class="relative mx-auto mt-20 mb-20 max-w-screen-lg overflow-hidden rounded-t-xl bg-teal-400/60 py-32 text-center shadow-xl shadow-gray-300">
       <h1 class="mt-2 px-8 text-3xl font-bold text-white md:text-5xl">Prendre un rendez-vous</h1>
@@ -33,20 +35,38 @@
   <script src="https://unpkg.com/flowbite@1.5.2/dist/datepicker.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-            var timeButtons = document.getElementById("timeButtons");
+        var timeButtons = document.getElementById("timeButtons");
 
-            timeButtons.addEventListener("click", function (event) {
-                var clickedButton = event.target;
+        timeButtons.addEventListener("click", function (event) {
+            var clickedButton = event.target;
 
-                if (clickedButton.tagName === "BUTTON") {
-                    var allButtons = timeButtons.getElementsByTagName("button");
-                    for (var i = 0; i < allButtons.length; i++) {
-                        allButtons[i].classList.remove("bg-teal-700");
-                    }
-
-                    clickedButton.classList.add("bg-teal-700");
+            if (clickedButton.tagName === "BUTTON") {
+                var allButtons = timeButtons.getElementsByTagName("button");
+                for (var i = 0; i < allButtons.length; i++) {
+                    allButtons[i].classList.remove("bg-teal-700");
                 }
-            });
+
+                clickedButton.classList.add("bg-teal-700");
+
+                var selectedTime = clickedButton.textContent;
+                sendReservation(selectedTime);
+            }
         });
+
+        function sendReservation(selectedTime) {
+            // Use Axios to send a POST request to your server
+            axios.post('/api/reserve', {
+                time: selectedTime,
+            })
+            .then(function (response) {
+                // Handle success, you can update UI or show a success message
+                console.log('Reservation successful:', response.data);
+            })
+            .catch(function (error) {
+                // Handle error, you can show an error message
+                console.error('Error making reservation:', error);
+            });
+        }
+    });
   </script>
   
